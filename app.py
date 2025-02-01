@@ -1,7 +1,7 @@
 from googletrans import Translator
 from languages import languages, language_dict
 import streamlit as st
-from transliterate import translit
+from unidecode import unidecode
 
 # Initialize the Translator
 translator = Translator()
@@ -20,11 +20,8 @@ if source_text:
     # Perform translation
     translated_text = translator.translate(source_text, src=detected_language_code, dest="en").text
     
-    # Get pronunciation for Arabic
-    if detected_language_code == "ar":
-        pronunciation = translit(source_text, 'ar', reversed=True)  # Reverse to get Romanized Arabic
-    else:
-        pronunciation = "Pronunciation not available for this language"
+    # Get pronunciation (transliteration) for any language
+    pronunciation = unidecode(source_text)  # This gives a simplified ASCII representation
     
     st.write(f"Detected language: {detected_language_name}")
     st.write(f"Translated text: {translated_text}")
