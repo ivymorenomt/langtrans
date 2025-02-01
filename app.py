@@ -20,12 +20,13 @@ if source_text:
     # Perform translation
     translated_text = translator.translate(source_text, src=detected_language_code, dest="en").text
     
+    translated_pronunciation = unidecode(translated_text)  # For other languages, use unidecode
     # Get pronunciation (transliteration) for any language
-    pronunciation = unidecode(source_text)  # This gives a simplified ASCII representation
+    
     
     st.write(f"Detected language: {detected_language_name}")
     st.write(f"Translated text: {translated_text}")
-    st.write(f"Pronunciation: {pronunciation}")
+    st.write(f"Pronunciation: {translated_pronunciation}")
 
 # Select destination language
 dest_lang = st.selectbox("Select a language", languages)
@@ -34,4 +35,7 @@ dest_lang = st.selectbox("Select a language", languages)
 if st.button("Translate") and source_text:
     # Perform translation to selected language
     out = translator.translate(source_text, src=detected_language_code, dest=dest_lang)
-    st.write(out.text)
+    translated_pronunciation_dest = unidecode(out.text)  # For other languages, use unidecode
+    
+    st.write(f"Translation: {out.text}")
+    st.write(f"Pronunciation: {translated_pronunciation_dest}")
